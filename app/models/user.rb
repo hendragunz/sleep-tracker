@@ -5,6 +5,9 @@ class User < ApplicationRecord
   has_many :followers, class_name: 'Follower', foreign_key: :followable_id
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
+  validates :email_address, presence: true
+  validates :name, presence: true
+
 
   # rerturn true if self followed by given user
   # otherwise returns false
