@@ -64,3 +64,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "grape", "~> 2.2"
+gem 'grape-entity'
+gem 'grape-swagger-rails'
