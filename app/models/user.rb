@@ -24,9 +24,9 @@ class User < ApplicationRecord
     followees.pluck(:followable_id).include?(user.id)
   end
 
-  def follow!(user)
+  def follow(user)
     return false if user == self
-    followees.create!(followable_id: user.id)
+    followees.find_or_create_by(followable_id: user.id)
   end
 
   # a simple method to generate authentication token
