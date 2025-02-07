@@ -4,11 +4,10 @@ module Simple
     format :json
     prefix :api
 
+
     helpers do
     end
 
-    get 'ping' do
-      { 'hello': 'world' }  # Returns a JSON response with a greeting message.  #
-    end
+    mount Simple::V1::API => '/'
   end
 end

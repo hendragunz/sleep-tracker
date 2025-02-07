@@ -28,4 +28,11 @@ class User < ApplicationRecord
     return false if user == self
     followees.create!(followable_id: user.id)
   end
+
+  # a simple method to generate authentication token
+  # for API access
+  #
+  def generate_authentication_token!
+    update!(authentication_token: SecureRandom.urlsafe_base64(nil, false))
+  end
 end
