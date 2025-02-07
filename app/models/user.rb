@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :followees, class_name: 'Follower', foreign_key: :follower_id
   has_many :followers, class_name: 'Follower', foreign_key: :followable_id
+  has_many :sleep_logs
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   validates :email_address, presence: true

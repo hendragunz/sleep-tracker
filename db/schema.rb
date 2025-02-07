@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_07_052120) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_07_190347) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_052120) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "sleep_logs", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "sleep_at"
+    t.datetime "wakeup_at"
+    t.integer "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sleep_logs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
