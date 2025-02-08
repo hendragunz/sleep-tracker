@@ -6,14 +6,25 @@ module Simple
     }
 
     resource :track do
+      desc "Return all Sleep / Wake Up activity logs"
+      get do
+        present current_user.sleep_logs, with: Simple::Entities::SleepLog
+      end
+
+      desc "Track time when go to bed"
       desc "Track time when go to sleep"
       post "/sleep" do
-
+        error!("You can't sleep while you already sleeping :-) ", 404)  if current_user.sleep?
+        current_user.sleep_logs.create(sleep_at: Time.now)
+        present sleep_log, with: Simple::Entities::SleepLog
       end
 
       desc "Track time when wake u "
       post "/wakeup" do
-
+        error!("You didn't sleep yet :-) ", 404)  if current_user.awake?
+        last_sleep_log = current_user.sleep_logs.latest.first
+        last_sleep_log.update(wakeup_at: Time.now)
+        present last_sleep_log, with: Simple::Entities::SleepLog
       end
     end
   end

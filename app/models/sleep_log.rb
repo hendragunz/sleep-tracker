@@ -1,7 +1,16 @@
 class SleepLog < ApplicationRecord
   scope :longest_duration, -> { order(duration: :desc) }
+  scope :latest, -> { order(created_at: :desc)}
 
   before_save :calc_duration
+
+  def sleep?
+    sleep_at.present? && wakeup_at.blank?
+  end
+
+  def wakeup?
+    wakeup_at.present?
+  end
 
   private
 
