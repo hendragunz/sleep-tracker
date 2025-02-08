@@ -6,9 +6,11 @@ module Simple
     }
 
     resources :follows do
-      # get do
-      #   { yes: "it works" }
-      # end
+      desc "To return all folowing users"
+      get do
+        @follows = current_user.followees
+        present @follows, with: Simple::Entities::Follow
+      end
 
       desc "To follow user with given email address"
       params do
