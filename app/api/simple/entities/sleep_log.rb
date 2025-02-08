@@ -7,6 +7,7 @@ module Simple
 
       expose :id
       expose :duration
+      expose :user, with: User, if: lambda { |instance, options| options[:user] }
 
       with_options(format_with: :iso_timestamp) do
         expose :sleep_at

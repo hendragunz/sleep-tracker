@@ -2,6 +2,8 @@ class SleepLog < ApplicationRecord
   scope :longest_duration, -> { order(duration: :desc) }
   scope :latest, -> { order(created_at: :desc)}
 
+  belongs_to :user
+
   before_save :calc_duration
 
   def sleep?
