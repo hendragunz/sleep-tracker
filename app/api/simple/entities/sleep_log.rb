@@ -3,7 +3,7 @@ module Simple
     class SleepLog < Grape::Entity
       root 'sleep_logs', 'sleep_log'
 
-      format_with(:iso_timestamp) { |dt| dt.iso8601 }
+      format_with(:iso_timestamp) { |dt| dt.try(:iso8601) }
 
       expose :id
       expose :duration
