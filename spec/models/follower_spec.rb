@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Follower, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  # validations
+  describe 'validations' do
+    it { should validate_presence_of(:follower) }
+    it { should validate_presence_of(:followable) }
+  end
 end
