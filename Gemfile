@@ -74,3 +74,5 @@ end
 gem "grape", "~> 2.2"
 gem 'grape-entity'
 gem 'grape-swagger-rails'
+gem "mission_control-jobs"
+gem 'pagy', '~> 9.3'

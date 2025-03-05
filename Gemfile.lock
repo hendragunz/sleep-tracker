@@ -192,6 +192,16 @@ GEM
     matrix (0.4.2)
     mini_mime (1.1.5)
     minitest (5.25.4)
+    mission_control-jobs (1.0.2)
+      actioncable (>= 7.1)
+      actionpack (>= 7.1)
+      activejob (>= 7.1)
+      activerecord (>= 7.1)
+      importmap-rails (>= 1.2.1)
+      irb (~> 1.13)
+      railties (>= 7.1)
+      stimulus-rails
+      turbo-rails
     msgpack (1.7.5)
     multi_json (1.15.0)
     mustermann (3.0.3)
@@ -230,6 +240,7 @@ GEM
     nokogiri (1.18.2-x86_64-linux-musl)
       racc (~> 1.4)
     ostruct (0.6.1)
+    pagy (9.3.3)
     parallel (1.26.3)
     parser (3.3.7.0)
       ast (~> 2.4.1)
@@ -450,6 +461,8 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  mission_control-jobs
+  pagy (~> 9.3)
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
