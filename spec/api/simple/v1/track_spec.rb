@@ -19,25 +19,24 @@ describe Simple::V1::Track, type: :request do
   describe "POST /api/v1/track/sleep" do
     context 'with user has not sleep yet'  do
       it 'should record the sleep_at properly' do
-        expect {
-          post "/api/v1/track/sleep", headers: headers, as: :json
-        }.to change{ user.sleep_logs.count }.by(1)
+        expect(user.sleep_at.present?).to be_falsey
+        post "/api/v1/track/sleep", headers: headers, as: :json
+
+        user.reload
+        expect(user.sleep_at.present?).to be_truthy
 
         expect(parsed_json['sleep_log']['sleep_at']).to be_present
-        expect(parsed_json['sleep_log']['wakeup_at']).not_to be_present
         expect(response.code).to eq("201")
       end
     end
 
     context 'with user already sleep'  do
       before {
-        user.sleep_logs.create(sleep_at: 3.hours.ago)
+        user.sleep!(3.hours.ago)
       }
 
       it 'should record the sleep_at properly' do
-        expect {
-          post "/api/v1/track/sleep", headers: headers, as: :json
-        }.to change{ user.sleep_logs.count }.by(0)
+        post "/api/v1/track/sleep", headers: headers, as: :json
 
         expect(parsed_json['error']).to eq("You can't sleep while you already sleeping :-) ")
         expect(response.code).to eq("404")
@@ -48,7 +47,7 @@ describe Simple::V1::Track, type: :request do
   describe "POST /api/v1/track/wakeup" do
     context 'with user has been sleep'  do
       before {
-        user.sleep_logs.create(sleep_at: 3.hours.ago)
+        user.sleep!(3.hours.ago)
       }
 
       it 'should record the wakeup properly' do
