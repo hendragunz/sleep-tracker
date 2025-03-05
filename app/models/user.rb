@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
-  has_many :followees, class_name: 'Follower', foreign_key: :follower_id
-  has_many :followers, class_name: 'Follower', foreign_key: :followable_id
+  has_many :followees, class_name: "Follower", foreign_key: :follower_id
+  has_many :followers, class_name: "Follower", foreign_key: :followable_id
   has_many :sleep_logs
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -39,14 +39,10 @@ class User < ApplicationRecord
 
 
   def sleep?
-    last_sleep_log = sleep_logs.latest.first
-    return false if last_sleep_log.nil?
-    last_sleep_log && last_sleep_log.sleep_at.present? && last_sleep_log.wakeup_at.blank?
+    sleep_at.present?
   end
 
-  def awake?
-    last_sleep_log = sleep_logs.latest.first
-    return true if last_sleep_log.nil?
-    last_sleep_log && last_sleep_log.sleep_at.present? && last_sleep_log.wakeup_at.present?
+  def sleep!(time)
+    update!(sleep_at: time)
   end
 end

@@ -14,16 +14,17 @@ module Simple
       desc "Track time when go to sleep"
       post "/sleep" do
         error!("You can't sleep while you already sleeping :-) ", 404)  if current_user.sleep?
-        sleep_log = current_user.sleep_logs.create(sleep_at: Time.now)
-        present sleep_log, with: Simple::Entities::SleepLog
+        time = Time.now
+        current_user.sleep!(time)
+        present({ sleep_at: time })
       end
 
       desc "Track time when wake up"
       post "/wakeup" do
-        error!("You didn't sleep yet :-) ", 404)  if current_user.awake?
-        last_sleep_log = current_user.sleep_logs.latest.first
-        last_sleep_log.update(wakeup_at: Time.now)
-        present last_sleep_log, with: Simple::Entities::SleepLog
+        error!("You didn't sleep yet :-) ", 404)  unless current_user.sleep?
+        wakeup_at = Time.now
+        UserWakeupJob.perform_later(current_user, wakeup_at)
+        present({ sleep_at: current_user.sleep_at, wakeup_at: wakeup_at })
       end
     end
   end
