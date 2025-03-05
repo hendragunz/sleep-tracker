@@ -7,8 +7,10 @@ module Simple
 
     resource :track do
       desc "Return all Sleep / Wake Up activity logs"
+      paginate per_page: 10, max_per_page: 200
       get do
-        present current_user.sleep_logs, with: Simple::Entities::SleepLog
+        @sleep_logs = paginate current_user.sleep_logs
+        present @sleep_logs, with: Simple::Entities::SleepLog
       end
 
       desc "Track time when go to sleep"
