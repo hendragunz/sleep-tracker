@@ -27,7 +27,7 @@ module Simple
       desc "Track time when wake up"
       post "/wakeup" do
         error!("You didn't sleep yet :-) ", 404)  unless current_user.sleep?
-        wakeup_at = Time.now
+        wakeup_at = Time.now.to_i
         UserWakeUpJob.perform_async(current_user.id, wakeup_at)
         present({
           sleep_log: {

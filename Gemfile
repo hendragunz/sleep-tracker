@@ -41,8 +41,8 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem "sidekiq"
-
+gem "sidekiq", "~> 7.3", ">= 7.3.9"
+gem "sidekiq-unique-jobs", "~> 8.0", ">= 8.0.10"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -76,5 +76,6 @@ end
 gem "grape", "~> 2.2"
 gem "grape-entity"
 gem "grape-swagger-rails"
+# gem "grape-throttler"
 gem "pagy", "~> 9.3"
 gem "api-pagination"
