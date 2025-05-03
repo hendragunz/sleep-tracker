@@ -1,6 +1,5 @@
 module Simple
   class V1::Track < Grape::API
-
     before {
       error!("You're not authorized", 401) unless authenticated?
     }
@@ -29,7 +28,7 @@ module Simple
       post "/wakeup" do
         error!("You didn't sleep yet :-) ", 404)  unless current_user.sleep?
         wakeup_at = Time.now
-        UserWakeupJob.perform_later(current_user, wakeup_at)
+        UserWakeUpJob.perform_async(current_user.id, wakeup_at)
         present({
           sleep_log: {
             sleep_at: current_user.sleep_at, wakeup_at: wakeup_at

@@ -1,7 +1,9 @@
-class UserWakeupJob < ApplicationJob
-  queue_as :default
+class UserWakeUpJob
+  include Sidekiq::Job
 
-  def perform(user, wakeup_at)
+  sidekiq_options queue: "critical"
+
+  def perform(user_id, wakeup_at)
     return unless user.sleep?
     ActiveRecord::Base.transaction do
       user.sleep_logs.create!(sleep_at: user.sleep_at, wakeup_at: wakeup_at)

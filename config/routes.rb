@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  mount MissionControl::Jobs::Engine, at: "/jobs"
-  mount Simple::API => '/'
+  require "sidekiq/web"
+  mount Simple::API => "/"
 
   resource :session
   resources :passwords, param: :token
