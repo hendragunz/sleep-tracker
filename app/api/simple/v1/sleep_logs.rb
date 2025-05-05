@@ -32,7 +32,7 @@ module Simple
         # logic to pull sleep logs data
         # from user's followees
         #
-        sleep_logs = SleepLog.joins(user: :followers).where(followers: { follower_id: current_user.id })
+        sleep_logs = SleepLog.joins(user: :followers).where(followers: { follower_id: current_user.id }).includes(:user)
         sleep_logs = sleep_logs.where("created_at >=?", from_date)  if from_date.present?
         sleep_logs = sleep_logs.where("created_at <=?", to_date)    if to_date.present?
         sleep_logs = paginate sleep_logs
