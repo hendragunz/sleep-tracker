@@ -1,14 +1,14 @@
 module Simple
   class V1::Follows < Grape::API
-
     before {
       error!("You're not authorized", 401) unless authenticated?
     }
 
     resources :follows do
       desc "To return all folowing users"
+      paginate per_page: 10, max_per_page: 100, enforce_max_per_page: true
       get do
-        @follows = current_user.followees
+        @follows = paginate current_user.followees
         present @follows, with: Simple::Entities::Follow
       end
 
@@ -19,7 +19,7 @@ module Simple
         end
       end
       post do
-        target_email  = declared(params)['user']['email_address']
+        target_email  = declared(params)["user"]["email_address"]
         target_user   = User.find_by(email_address: target_email)
 
         if target_user
@@ -30,32 +30,31 @@ module Simple
         end
       end
 
-
-      desc "To return all followees - sleep activities ", {
-        is_array: true,
+      desc "To unfollow user with given email address", {
+        is_array: false,
         failures: [
-          [400, 'Bad Request']
+          [ 400, "Bad Request" ]
         ],
-        summary: "Return all folowees sleep activities"
+        summary: "To unfollow user"
       }
       params do
-        optional :from_date,  type: Date
-        optional :to_date,    type: Date
+        requires :user, type: Hash do
+          requires :email_address, type: String, desc: "Target user's email address to unfollow"
+        end
       end
-      get '/sleep_logs' do
-        from_date     = declared(params)['from_date']
-        to_date       = declared(params)['to_date']
+      delete do
+        target_email  = declared(params)["user"]["email_address"]
+        target_user   = User.find_by(email_address: target_email)
 
-        # logic to pull sleep logs data
-        # from user's followees
-        #
-        followee_ids  = current_user.followees.map(&:followable_id)
-        sleep_logs = SleepLog.where(user_id: followee_ids).includes(:user)
-        sleep_logs = sleep_logs.where('created_at >=?', from_date)  if from_date.present?
-        sleep_logs = sleep_logs.where('created_at <=?', to_date)    if to_date.present?
-
-
-        present sleep_logs, with: Simple::Entities::SleepLog, user: true
+        if target_user
+          if current_user.unfollow(target_user)
+            status :no_content
+          else
+            error!("Not following user with email address: #{target_email}", 404)
+          end
+        else
+          error!("The follow user with email address: #{target_email} is not exist", 404)
+        end
       end
     end
   end
