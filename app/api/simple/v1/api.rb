@@ -36,5 +36,6 @@ module Simple
     mount Simple::V1::Auth
     mount Simple::V1::Follows
     mount Simple::V1::Track
+    mount Simple::V1::SleepLogs
   end
 end
