@@ -2,7 +2,8 @@ class UserWakeUpJob
   include Sidekiq::Job
 
   sidekiq_options queue: "critical",
-                  lock: :until_executed
+                  lock: :until_executed,
+                  lock_args_method: ->(args) { [ args.first ] }
 
   def perform(user_id, wakeup_at)
     user = User.find_by(id: user_id)
