@@ -23,8 +23,17 @@ module Simple
         target_user   = User.find_by(email_address: target_email)
 
         if target_user
-          result = current_user.follow(target_user)
-          present result, with: Simple::Entities::Follow
+          if current_user.following?(target_user)
+            error!("Already follow user with email address: #{target_email}", 404)
+          else
+            job_id = FollowUnfollowJob.perform_async(current_user.id, target_email)
+
+            if job_id.present?
+              present({ follow: { email_address: target_email } })
+            else
+              error!("Please try again later, failure to follow #{target_email}", 404)
+            end
+          end
         else
           error!("The follow user with email address: #{target_email} is not exist", 404)
         end
@@ -47,8 +56,14 @@ module Simple
         target_user   = User.find_by(email_address: target_email)
 
         if target_user
-          if current_user.unfollow(target_user)
-            status :no_content
+          if current_user.following?(target_user)
+            job_id = FollowUnfollowJob.perform_async(current_user.id, target_email)
+
+            if job_id.present?
+              present({ unfollow: { email_address: target_email } })
+            else
+              error!("Please try again later, failure to unfollow #{target_email}", 404)
+            end
           else
             error!("Not following user with email address: #{target_email}", 404)
           end
