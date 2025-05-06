@@ -5,5 +5,6 @@ class AddIndexForPerformance < ActiveRecord::Migration[8.0]
     add_index :sleep_logs, :sleep_at
     add_index :sleep_logs, :wakeup_at
     add_index :sleep_logs, :duration
+    add_index :sleep_logs, :created_at
   end
 end

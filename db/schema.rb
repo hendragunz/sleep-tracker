@@ -39,6 +39,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_164420) do
     t.integer "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_sleep_logs_on_created_at"
     t.index ["duration"], name: "index_sleep_logs_on_duration"
     t.index ["sleep_at"], name: "index_sleep_logs_on_sleep_at"
     t.index ["user_id"], name: "index_sleep_logs_on_user_id"
