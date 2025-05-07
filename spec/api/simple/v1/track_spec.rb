@@ -51,13 +51,15 @@ describe Simple::V1::Track, type: :request do
       }
 
       it 'should record the wakeup properly' do
-        expect {
-          post "/api/v1/track/wakeup", headers: headers, as: :json
-        }.to change{ user.sleep_logs.count }.by(0)
+        Sidekiq::Testing.inline! do
+          expect {
+            post "/api/v1/track/wakeup", headers: headers, as: :json
+          }.to change { user.sleep_logs.count }.by(1)
 
-        expect(parsed_json['sleep_log']['sleep_at']).to be_present
-        expect(parsed_json['sleep_log']['wakeup_at']).to be_present
-        expect(response.code).to eq("201")
+          expect(parsed_json['sleep_log']['sleep_at']).to be_present
+          expect(parsed_json['sleep_log']['wakeup_at']).to be_present
+          expect(response.code).to eq("201")
+        end
       end
     end
 
@@ -65,7 +67,7 @@ describe Simple::V1::Track, type: :request do
       it 'should return error message' do
         expect {
           post "/api/v1/track/wakeup", headers: headers, as: :json
-        }.to change{ user.sleep_logs.count }.by(0)
+        }.to change { user.sleep_logs.count }.by(0)
 
         expect(parsed_json['error']).to eq("You didn't sleep yet :-) ")
         expect(response.code).to eq("404")
