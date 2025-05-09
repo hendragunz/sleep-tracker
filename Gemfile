@@ -73,7 +73,7 @@ group :test do
   gem "rails-controller-testing"
 end
 
-gem "grape", "~> 2.2"
+gem "grape", "~> 2.3"
 gem "grape-entity"
 gem "grape-swagger-rails"
 # gem "grape-throttler"
