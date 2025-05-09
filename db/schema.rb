@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_05_030008) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_06_164420) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -39,7 +39,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_05_030008) do
     t.integer "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_sleep_logs_on_created_at"
+    t.index ["duration"], name: "index_sleep_logs_on_duration"
+    t.index ["sleep_at"], name: "index_sleep_logs_on_sleep_at"
     t.index ["user_id"], name: "index_sleep_logs_on_user_id"
+    t.index ["wakeup_at"], name: "index_sleep_logs_on_wakeup_at"
   end
 
   create_table "users", force: :cascade do |t|
@@ -51,7 +55,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_05_030008) do
     t.string "authentication_token"
     t.datetime "authentication_token_created_at"
     t.datetime "sleep_at"
+    t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["id"], name: "index_users_on_id"
   end
 
   add_foreign_key "sessions", "users"

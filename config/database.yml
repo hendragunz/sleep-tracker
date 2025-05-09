@@ -22,9 +22,9 @@ default: &default
 cache: &cache
   <<: *default
   migrations_paths: db/cache_migrate
-queue: &queue
-  <<: *default
-  migrations_paths: db/queue_migrate
+# queue: &queue
+#   <<: *default
+#   migrations_paths: db/queue_migrate
 cable: &cable
   <<: *default
   migrations_paths: db/cable_migrate
@@ -37,9 +37,9 @@ development:
   cache:
     <<: *cache
     database: sleep_tracker_development_cache
-  queue:
-    <<: *queue
-    database: sleep_tracker_development_queue
+  # queue:
+  #   <<: *queue
+  #   database: sleep_tracker_development_queue
   cable:
     <<: *cable
     database: sleep_tracker_development_cable
@@ -108,10 +108,10 @@ production:
     <<: *primary_production
     database: sleep_tracker_production_cache
     migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: sleep_tracker_production_queue
-    migrations_paths: db/queue_migrate
+  # queue:
+  #   <<: *primary_production
+  #   database: sleep_tracker_production_queue
+  #   migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
     database: sleep_tracker_production_cable

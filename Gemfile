@@ -27,7 +27,6 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
-gem "solid_queue"
 gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -42,6 +41,9 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem "sidekiq", "~> 7.3", ">= 7.3.9"
+gem "sidekiq-unique-jobs", "~> 8.0", ">= 8.0.10"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -53,8 +55,8 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'ffaker'
-  gem 'factory_bot_rails'
+  gem "ffaker"
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -66,14 +68,14 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem 'rspec-rails'
-  gem 'shoulda-matchers'
-  gem 'rails-controller-testing'
+  gem "rspec-rails"
+  gem "shoulda-matchers"
+  gem "rails-controller-testing"
 end
 
 gem "grape", "~> 2.3"
-gem 'grape-entity'
-gem 'grape-swagger-rails'
-gem "mission_control-jobs"
-gem 'pagy', '~> 9.3'
-gem 'api-pagination'
+gem "grape-entity"
+gem "grape-swagger-rails"
+# gem "grape-throttler"
+gem "pagy", "~> 9.3"
+gem "api-pagination"

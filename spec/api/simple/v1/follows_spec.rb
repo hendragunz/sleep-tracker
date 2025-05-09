@@ -55,12 +55,14 @@ describe Simple::V1::Follows, type: :request do
     }
 
     it "should follow target_user1 properly" do
-      expect {
-        post "/api/v1/follows", headers: headers, params: api_params, as: :json
-      }.to change{ user.followees.count }.by(1)
+      Sidekiq::Testing.inline! do
+        expect {
+          post "/api/v1/follows", headers: headers, params: api_params, as: :json
+        }.to change { user.followees.reload.count }.by(1)
 
-      expect(parsed_json['follow']['email_address']).to eq(target_user1.email_address)
-      expect(response.code).to eq("201")
+        expect(parsed_json['follow']['email_address']).to eq(target_user1.email_address)
+        expect(response.code).to eq("201")
+      end
     end
   end
 end

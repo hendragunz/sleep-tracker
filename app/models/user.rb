@@ -30,6 +30,12 @@ class User < ApplicationRecord
     followees.find_or_create_by(followable_id: user.id)
   end
 
+  def unfollow(user)
+    return false if user == self
+    followee = followees.find_by(followable_id: user.id)
+    followee.destroy if followee
+  end
+
   # a simple method to generate authentication token
   # for API access
   #
