@@ -71,11 +71,12 @@ group :test do
   gem "rspec-rails"
   gem "shoulda-matchers"
   gem "rails-controller-testing"
+  gem "simplecov", require: false
 end
 
 gem "grape", "~> 2.3"
 gem "grape-entity"
 gem "grape-swagger-rails"
-# gem "grape-throttler"
+# gem "throttling"
 gem "pagy", "~> 9.3"
 gem "api-pagination"
