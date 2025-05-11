@@ -23,8 +23,8 @@ module Simple
 
         # logic to pull sleep logs data
         sleep_logs = current_user.sleep_logs
-        sleep_logs = sleep_logs.where("created_at >=?", from_date)  if from_date.present?
-        sleep_logs = sleep_logs.where("created_at <=?", to_date)    if to_date.present?
+        sleep_logs = sleep_logs.where("sleep_at >=?", from_date)  if from_date.present?
+        sleep_logs = sleep_logs.where("sleep_at <=?", to_date)    if to_date.present?
         sleep_logs = paginate sleep_logs.latest
 
         present sleep_logs, with: Simple::Entities::SleepLog
@@ -51,8 +51,8 @@ module Simple
         # from user's followees
         #
         sleep_logs = SleepLog.joins(user: :followers).where(followers: { follower_id: current_user.id }).includes(:user)
-        sleep_logs = sleep_logs.where("created_at >=?", from_date)  if from_date.present?
-        sleep_logs = sleep_logs.where("created_at <=?", to_date)    if to_date.present?
+        sleep_logs = sleep_logs.where("sleep_at >=?", from_date)  if from_date.present?
+        sleep_logs = sleep_logs.where("sleep_at <=?", to_date)    if to_date.present?
         sleep_logs = paginate sleep_logs
 
         present sleep_logs, with: Simple::Entities::SleepLog, user: true
@@ -72,7 +72,7 @@ module Simple
         # from user's followees
         #
         sleep_logs = SleepLog.joins(user: :followers).where(followers: { follower_id: current_user.id }).includes(:user)
-        sleep_logs = sleep_logs.where("sleep_logs.created_at >=?", 7.days.ago)
+        sleep_logs = sleep_logs.where("sleep_logs.sleep_at >=?", 7.days.ago)
         sleep_logs = paginate sleep_logs.longest_duration
 
         present sleep_logs, with: Simple::Entities::SleepLog, user: true

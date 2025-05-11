@@ -1,6 +1,5 @@
 module Simple
   class API < Grape::API
-    version 'v1'
     format :json
     prefix :api
 
@@ -8,6 +7,6 @@ module Simple
     helpers do
     end
 
-    mount Simple::V1::API => '/'
+    mount Simple::V1::API => "/"
   end
 end
