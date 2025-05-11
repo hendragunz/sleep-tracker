@@ -72,7 +72,7 @@ module Simple
         # from user's followees
         #
         sleep_logs = SleepLog.joins(user: :followers).where(followers: { follower_id: current_user.id }).includes(:user)
-        sleep_logs = sleep_logs.where("sleep_logs.sleep_logs.sleep_at >=?", 7.days.ago)
+        sleep_logs = sleep_logs.where("sleep_logs.sleep_at >=?", 7.days.ago)
         sleep_logs = paginate sleep_logs.longest_duration
 
         present sleep_logs, with: Simple::Entities::SleepLog, user: true
