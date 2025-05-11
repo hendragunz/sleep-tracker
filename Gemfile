@@ -76,7 +76,9 @@ end
 
 gem "grape", "~> 2.3"
 gem "grape-entity"
-gem "grape-swagger-rails"
-# gem "throttling"
+gem "grape-swagger"
+gem "grape-swagger-entity", "~> 0.3"
+gem "grape-swagger-representable", "~> 0.2"
+gem "throttling"
 gem "pagy", "~> 9.3"
 gem "api-pagination"
