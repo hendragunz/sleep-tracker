@@ -28,3 +28,8 @@ Test App challenges for tracking sleep from followees.
 
 To check the rspec, just need to run `$ bundle exec rspec spec`
 Coverage can be found in folder `/coverage`
+
+
+# Swagger - API Documentation
+
+To see all API endpoints, you can go to `http://localhost:3000/api/swagger_doc.json`
