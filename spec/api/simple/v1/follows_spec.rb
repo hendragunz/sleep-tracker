@@ -65,4 +65,39 @@ describe Simple::V1::Follows, type: :request do
       end
     end
   end
+
+  describe "DELETE /api/v1/follows" do
+    let(:target_user1) { create(:user) }
+    let(:target_user2) { create(:user) }
+
+    let(:api_params) {
+      {
+        user: {
+          email_address: target_user1.email_address
+        }
+      }
+    }
+
+    before {
+      user.follow(target_user1)
+      user.follow(target_user2)
+    }
+
+    it "should follow target_user1 properly" do
+      Sidekiq::Testing.inline! do
+        expect(user.following?(target_user1)).to be_truthy
+        expect(user.following?(target_user2)).to be_truthy
+
+        expect {
+          delete "/api/v1/follows", headers: headers, params: api_params, as: :json
+        }.to change { user.followees.reload.count }.by(-1)
+
+        expect(user.following?(target_user1)).to be_falsey
+        expect(user.following?(target_user2)).to be_truthy
+
+        # expect(parsed_json['follow']['email_address']).to eq(target_user1.email_address)
+        # expect(response.code).to eq("201")
+      end
+    end
+  end
 end
